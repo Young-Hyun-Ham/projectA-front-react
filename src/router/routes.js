@@ -1,16 +1,36 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Main from './views/Main';
+// src/router/AppRoutes.js
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-const Routes = () => {
+import config from '../config';
+import { routes } from "../routesConfig";
+import PrivateRoute from "./privateRoute";
+
+const AppRoutes = () => {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Main} />
-        {/* Add more routes as needed */}
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        {routes.map((route) => (
+          <Route exact
+            key={route.path}
+            path={route.path}
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                {route.private ? (
+                  <PrivateRoute
+                    component={lazy(() => import(`../views/${route.component}`))}
+                    token={config.ACCESS_TOKEN}
+                  />
+                ) : (
+                  React.createElement(lazy(() => import(`../views/${route.component}`)))
+                )}
+              </Suspense>
+            }
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
   );
 };
 
-export default Routes;
+export default AppRoutes;
