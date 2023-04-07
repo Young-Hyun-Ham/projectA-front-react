@@ -3,9 +3,7 @@ import React, {useState, useRef} from 'react';
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 
-import '../../css/fortune.css';
-
-const FortuneAI = () => {  
+const FortuneAI = () => {
   const inputRef = useRef();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -82,6 +80,167 @@ const FortuneAI = () => {
   
   return (
     <div>
+      <style>
+        {`
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+        }
+        
+        .chat-container {
+          width: 400px;
+          min-width: 300px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        
+        .chat-box {
+          background-color: #f2f2f2;
+          padding: 10px;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          overflow-y: scroll;
+          height: 500px;
+        }
+        
+        .chat-message {
+          background-color: #fff;
+          padding: 10px;
+          border-radius: 10px;
+          margin-bottom: 10px;
+          text-align: left;
+        }
+        
+        .chat-message p {
+          margin: 0;
+          padding: 0;
+        }
+        
+        .chat-input {
+          display: flex;
+          margin-top: 20px;
+        }
+        
+        .chat-input input {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          margin-right: 10px;
+        }
+        
+        .chat-input button {
+          background-color: #4CAF50;
+          color: #fff;
+          border: none;
+          padding: 10px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .chat-input button:hover {
+          background-color: #3e8e41;
+        }
+        
+        .assistant {
+          color: blue;
+        }
+        
+        .intro-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .intro-container img{
+          width: 370px;
+          min-width: 300px;
+        }
+        
+        #loader {
+          font-size: 25px;
+          text-align: center;
+        }
+        
+        .leaflet-link {
+          border: 2px solid #007bff;
+          border-radius: 5px;
+          display: inline-block;
+          padding: 5px;
+          text-decoration: none;
+          color: #007bff;
+        }
+        
+        .leaflet-link:hover {
+          background-color: #007bff;
+          color: white;
+        }
+        
+        .form-container {
+          width: 100%;
+          max-width: 500px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: white;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+        }
+        
+        h2 {
+          margin-bottom: 1rem;
+        }
+        
+        .form-container {
+          max-width: 500px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: white;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+        }
+        
+        .form-label {
+          display: block;
+          text-align: center;
+        }
+        
+        .form-control,
+        .form-select {
+          display: block;
+          margin: 0 auto;
+          width: 100%;
+        }
+        
+        .mb-3 {
+          text-align: center;
+        }
+        
+        /* 바탕색 지정 */
+        main {
+          background-color: #2b2d42;
+        }
+        
+        #fortuneInfo .form-container {
+          width: 35%;
+          background-color: #2f2e40;
+        }
+        
+        #intro h1,
+        .form-label {
+          color: #F5B041;
+        }
+        
+        .form-control,
+        .form-select,
+        .form-button {
+          background-color: #433d3c;
+          color: white;
+        }        
+        `}
+      </style>
       <Header />
       <main>
         <section className="container">

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-import config from '../config';
+import { apiUrl, useAuth } from '../config';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 
@@ -11,9 +11,17 @@ const Login = () => {
   const [userPwd, setUserPwd] = useState('');
 
   const navigate = useNavigate();
+  
+  const { setIsAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (localStorage.getItem('access_token') ? true : false) {
+      navigate('/', { replace: true });
+    }
+  }, []);
 
   const handleLogin = () => {
-    fetch(`${config.API_URL}/api/v1/login/login`, {
+    fetch(`${apiUrl}/api/v1/login/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,8 +41,11 @@ const Login = () => {
           // Save the refresh token to local storage
           localStorage.setItem('refresh_token', data.refresh_token);
         }
+        
+        // If the user is authenticated, update the authentication state
+        setIsAuthenticated(true);
 
-        navigate('/');
+        navigate('/', { replace: true });
       })
       .catch((error) => {
         alert(error.message);

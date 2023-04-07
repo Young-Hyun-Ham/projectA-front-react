@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
-import config from '../config';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl, useAuth } from '../config';
 
 const Header = () => {
   const [displayLogin, setDisplayLogin] = useState(true);
@@ -10,6 +10,8 @@ const Header = () => {
   const [displayLogout, setDisplayLogout] = useState(false);
 
   const navigate = useNavigate();
+    
+  const { setIsAuthenticated } = useAuth();
 
   useEffect(() => {
     tokenCheck();
@@ -40,7 +42,7 @@ const Header = () => {
       if (sessionYN == "Y") {
         alert("로그인을 하시기 바랍니다.");
         //location.href = "/login";
-        navigate('/login');
+        navigate('/login', { replace: true });
       }
     }
   };
@@ -62,7 +64,7 @@ const Header = () => {
   };
 
   const refreshAccessToken = () => {
-    fetch(`${config.API_URL}/refresh_token`, {
+    fetch(`${apiUrl}/refresh_token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -95,14 +97,23 @@ const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("access_token_exp");
     localStorage.setItem("access_token", "");
+    localStorage.setItem("access_token_exp", 0);
+    
+    setIsAuthenticated(false);
 
     navigate('/login');
   }
 
+  const fortune = () => {
+    navigate('/fortune');
+    //window.location.reload();
+  }
+
   return (
     <header id="header">
-      <h1>나만의공간</h1>
+      <h1><Link to="/" className="nav-link">나만의 공간</Link></h1>
       <nav className="navbar navbar-expand-md navbar-light">
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
@@ -125,7 +136,7 @@ const Header = () => {
               <Link to="#" className="nav-link">쇼핑</Link>
             </li>
             <li className="nav-item">
-              <Link to="/fortune" className="nav-link">운세보기</Link>
+              <a href="#" onClick={fortune} className="nav-link" style={{ cursor: 'pointer'}}>운세보기</a>
             </li>
             <li className="nav-item" id="loginMenuItem" style={{ display: displayLogin ? 'block' : 'none' }}>
               <Link to="/login" className="nav-link">로그인</Link>
